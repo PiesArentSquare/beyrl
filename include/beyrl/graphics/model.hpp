@@ -22,10 +22,14 @@ class Model {
     void bindIBO() const;
 
 public:
-    Model(float verticies[], size_t verticiesSize, unsigned indicies[], size_t indexCount, layout const &layout);
+    
+    Model(void *verticies, size_t verticiesSize, unsigned indicies[], size_t indexCount, layout const &layout);
+    Model(Model &&) = default;
     ~Model();
 
     void bind() const;
+
+    unsigned getVertCount() const { return m_vertCount; }
 };
 
 }

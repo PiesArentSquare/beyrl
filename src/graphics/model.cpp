@@ -2,7 +2,7 @@
 
 namespace beyrl {
 
-Model::Model(float verticies[], size_t verticiesSize, unsigned indicies[], size_t indexCount, Model::layout const &layout) : m_vao(), m_vbo(), m_ibo(), m_vertCount(indexCount) {
+Model::Model(void *verticies, size_t verticiesSize, unsigned indicies[], size_t indexCount, layout const &layout) : m_vao(), m_vbo(), m_ibo(), m_vertCount(indexCount) {
     glGenVertexArrays(1, &m_vao);
     glGenBuffers(1, &m_vbo);
     glGenBuffers(1, &m_ibo);

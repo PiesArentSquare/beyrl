@@ -12,7 +12,7 @@ template<typename T> struct Vector2 {
 
     static unsigned const count = 2;
 
-    // Vector2(T const x = 0, T const y = 0) : x(x), y(y) {}
+    constexpr Vector2(T const x = 0, T const y = 0) : x(x), y(y) {}
 
     inline Vector2<T> &operator+=(Vector2<T> const &rhs) { x += rhs.x; y += rhs.y; return *this; }
     inline Vector2<T> &operator-=(Vector2<T> const &rhs) { x -= rhs.x; y -= rhs.y; return *this; }
@@ -30,8 +30,8 @@ template<typename T> struct Vector3 : public Vector2<T> {
 
     static unsigned const count = 3;
 
-    // Vector3(T const x = 0, T const y = 0, T const z = 0) : Vector2<T>(x, y), z(z) {}
-    // Vector3(Vector2<T> const &xy, T const z = 0) : Vector2<T>(xy), z(z) {}
+    constexpr Vector3(T const x = 0, T const y = 0, T const z = 0) : Vector2<T>(x, y), z(z) {}
+    constexpr Vector3(Vector2<T> const &xy, T const z = 0) : Vector2<T>(xy), z(z) {}
 
     inline Vector3<T> &operator+=(Vector3<T> const &rhs) { this->Vector2<T>::operator+=(rhs); z += rhs.z; return *this; }
     inline Vector3<T> &operator-=(Vector3<T> const &rhs) { this->Vector2<T>::operator-=(rhs); z -= rhs.z; return *this; }
@@ -52,9 +52,9 @@ template<typename T> struct Vector4 : public Vector3<T> {
     
     static unsigned const count = 4;
 
-    // Vector4(T const x = 0, T const y = 0, T const z = 0, T const w = 0) : Vector3<T>(x, y, z), w(w) {}
-    // Vector4(Vector2<T> const &xy, T const z = 0, T const w = 0) : Vector3<T>(xy, z), w(w) {}
-    // Vector4(Vector3<T> const &xyz, T const w = 0) : Vector3<T>(xyz), w(w) {}
+    constexpr Vector4(T const x = 0, T const y = 0, T const z = 0, T const w = 0) : Vector3<T>(x, y, z), w(w) {}
+    constexpr Vector4(Vector2<T> const &xy, T const z = 0, T const w = 0) : Vector3<T>(xy, z), w(w) {}
+    constexpr Vector4(Vector3<T> const &xyz, T const w = 0) : Vector3<T>(xyz), w(w) {}
 
     inline Vector4<T> &operator+=(Vector4<T> const &rhs) { this->Vector3<T>::operator+=(rhs); w += rhs.w; return *this; }
     inline Vector4<T> &operator-=(Vector4<T> const &rhs) { this->Vector3<T>::operator-=(rhs); w -= rhs.w; return *this; }
