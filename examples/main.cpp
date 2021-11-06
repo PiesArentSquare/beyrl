@@ -22,6 +22,6 @@ int main() {
     beyrl::Model model(verticies, sizeof(verticies), indicies, 6, layout);
 
     window.run([&]() {
-        model.bind();
+        window.render(model, shader);
     });
 }

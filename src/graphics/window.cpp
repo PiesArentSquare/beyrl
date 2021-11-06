@@ -32,16 +32,19 @@ void Window::resize(unsigned width, unsigned height) {
     props.height = height;
 }
 
-void Window::run(std::function<void()> runFunc) {
-    Shader shader("res/vert.glsl", "res/frag.glsl");
+void Window::render(Model const &model, Shader const &shader) {
+    shader.bind();
+    model.bind();
+    glDrawElements(GL_TRIANGLES, model.getVertCount(), GL_UNSIGNED_INT, 0);
 
+}
+
+void Window::run(std::function<void()> runFunc) {
     while(!glfwWindowShouldClose(m_glwindow)) {
         glClearColor(1.0, 0.8, 0.3, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        shader.bind();
         runFunc();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         
         glfwSwapBuffers(m_glwindow);
         glfwPollEvents();

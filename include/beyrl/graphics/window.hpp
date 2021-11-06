@@ -4,6 +4,8 @@
 #include <string>
 
 #include "gl_context.hpp"
+#include "model.hpp"
+#include "shader.hpp"
 
 namespace beyrl {
 
@@ -24,6 +26,7 @@ class Window {
 public:
     ~Window();
     void run(std::function<void()>);
+    void render(Model const &model, Shader const &shader);
 };
 
 }
