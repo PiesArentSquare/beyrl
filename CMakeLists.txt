@@ -12,8 +12,10 @@ add_library(beyrl STATIC
     "src/graphics/context.cpp"
     "src/graphics/window.cpp"
     "src/graphics/shader.cpp"
+    "src/graphics/model.cpp"
 )
 target_include_directories(beyrl PUBLIC "include/" PRIVATE "src")
 target_link_libraries(beyrl PUBLIC glfwInterface glad)
+target_compile_features(beyrl PUBLIC cxx_std_20)
 
 add_subdirectory("examples")

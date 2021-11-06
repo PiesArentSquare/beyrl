@@ -1,16 +1,19 @@
 #pragma once
 #include <vector>
 #include "gl_context.hpp"
+#include <functional>
 
 namespace beyrl {
 
 class Window {
     GLFWwindow *m_glwindow;
-    Window();
+
     friend class RenderingContext;
+    Window();
+    void setup();
 public:
     ~Window();
-    void run();
+    void run(std::function<void()>);
 };
 
 }

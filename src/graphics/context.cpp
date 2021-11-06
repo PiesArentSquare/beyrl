@@ -24,6 +24,7 @@ Window RenderingContext::window(unsigned width, unsigned height, std::string con
         if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
             throw std::runtime_error("gl error: failed to initialize glad");
     }
+    window.setup();
     return window;
 }
 
