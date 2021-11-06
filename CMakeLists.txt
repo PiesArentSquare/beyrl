@@ -8,6 +8,8 @@ add_library(glfwInterface INTERFACE)
 target_link_libraries(glfwInterface INTERFACE glfw)
 target_include_directories(glfwInterface INTERFACE "libs/glfw/include")
 
+add_subdirectory("libs/stb")
+
 add_library(beyrl STATIC
     "src/graphics/context.cpp"
     "src/graphics/window.cpp"
@@ -15,7 +17,7 @@ add_library(beyrl STATIC
     "src/graphics/model.cpp"
 )
 target_include_directories(beyrl PUBLIC "include/" PRIVATE "src")
-target_link_libraries(beyrl PUBLIC glfwInterface glad)
+target_link_libraries(beyrl PUBLIC glfwInterface glad stb_image)
 target_compile_features(beyrl PUBLIC cxx_std_20)
 
 add_subdirectory("examples")
