@@ -1,17 +1,19 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
+#include <memory>
+
+#include "window.hpp"
 
 namespace beyrl {
 
-class Window;
-
 class RenderingContext {
-    bool m_gladInit = false;
+    bool m_init = false;
 public:
     RenderingContext();
     ~RenderingContext();
-    Window window(unsigned width, unsigned height, std::string const &name);
+    Window window(Window::properties props);
 };
 
 }

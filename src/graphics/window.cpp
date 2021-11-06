@@ -5,12 +5,17 @@
 
 namespace beyrl {
 
-Window::Window() {
-    m_glwindow = glfwCreateWindow(1280, 720, "Beyrl", NULL, NULL);
+Window::Window(Window::properties props) {
+    m_glwindow = glfwCreateWindow(props.width, props.height, props.name.c_str(), NULL, NULL);
     if (m_glwindow == NULL) {
         glfwTerminate();
         throw std::runtime_error("gl error: failed to create gl window");
     }
+    glfwSetWindowUserPointer(m_glwindow, this);
+    glfwSetFramebufferSizeCallback(m_glwindow, [](auto *window, int width, int height) {
+        Window *w = (Window *)glfwGetWindowUserPointer(window);
+        w->resize(width, height);
+    });
 }
 
 Window::~Window() {
@@ -18,11 +23,13 @@ Window::~Window() {
 }
 
 void Window::setup() {
-    glViewport(0, 0, 1280, 720);
+    resize(props.width, props.height);
+}
 
-    glfwSetFramebufferSizeCallback(m_glwindow, [](auto *window, int width, int height) {
-        glViewport(0, 0, width, height);
-    });
+void Window::resize(unsigned width, unsigned height) {
+    glViewport(0, 0, width, height);
+    props.width = width;
+    props.height = height;
 }
 
 void Window::run(std::function<void()> runFunc) {

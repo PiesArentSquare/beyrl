@@ -17,10 +17,10 @@ RenderingContext::~RenderingContext() {
     glfwTerminate();
 }
 
-Window RenderingContext::window(unsigned width, unsigned height, std::string const &name) {
-    Window window{};
+Window RenderingContext::window(Window::properties props) {
+    Window window(props);
     glfwMakeContextCurrent(window.m_glwindow);
-    if (!m_gladInit) {
+    if (!m_init) {
         if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
             throw std::runtime_error("gl error: failed to initialize glad");
     }

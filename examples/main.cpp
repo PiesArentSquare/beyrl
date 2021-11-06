@@ -3,7 +3,7 @@
 
 int main() {
     beyrl::RenderingContext context;
-    auto window = context.window(1280, 720, "Main Window");
+    auto window = context.window({1280, 720, "Main Window"});
 
     auto layout = beyrl::layout(beyrl::Vec3f{}, beyrl::Vec2f{});
 
