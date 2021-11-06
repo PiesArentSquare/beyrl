@@ -16,6 +16,8 @@ public:
     Shader(std::string const &vertexPath, std::string const &fragmentPath);
     Shader(Shader &&) = default;
 
+    ~Shader();
+
     void bind() const;
 
     void setUniform(std::string const &name, bool value) const;

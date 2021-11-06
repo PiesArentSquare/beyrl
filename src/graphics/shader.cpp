@@ -62,6 +62,10 @@ Shader::Shader(std::string const &vertPath, std::string const &fragPath) {
     glDeleteShader(fragShader);
 }
 
+Shader::~Shader() {
+    glDeleteProgram(m_id);
+}
+
 void Shader::bind() const {
     glUseProgram(m_id);
 }

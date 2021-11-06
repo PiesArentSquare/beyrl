@@ -17,6 +17,12 @@ Model::Model(float verticies[], size_t verticiesSize, unsigned indicies[], size_
     }
 }
 
+Model::~Model() {
+    glDeleteVertexArrays(1, &m_vao);
+    glDeleteBuffers(1, &m_vbo);
+    glDeleteBuffers(1, &m_ibo);
+}
+
 void Model::bindVAO() const { glBindVertexArray(m_vao); }
 void Model::bindVBO() const { glBindBuffer(GL_ARRAY_BUFFER, m_vbo); }
 void Model::bindIBO() const { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo); }

@@ -13,7 +13,9 @@ Window::Window() {
     }
 }
 
-Window::~Window() {}
+Window::~Window() {
+    glfwDestroyWindow(m_glwindow);
+}
 
 void Window::setup() {
     glViewport(0, 0, 1280, 720);
