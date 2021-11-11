@@ -27,6 +27,8 @@ public:
     ~Window();
     void run(std::function<void()>);
     void render(Model const &model, Shader const &shader);
+
+    void enableBlending(bool enable);
 };
 
 }

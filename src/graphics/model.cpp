@@ -13,7 +13,7 @@ Model::Model(void *verticies, size_t verticiesSize, unsigned indicies[], size_t 
 
     for (int i = 0; i < layout.elements.size(); i++) {
         glVertexAttribPointer(i, layout.elements[i].count, layout.elements[i].type, GL_FALSE, layout.stride, (const void*)layout.elements[i].offset);
-        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(i);
     }
 }
 

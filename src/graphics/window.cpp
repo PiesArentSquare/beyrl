@@ -51,4 +51,13 @@ void Window::run(std::function<void()> runFunc) {
     }
 }
 
+void Window::enableBlending(bool enable) {
+    if (enable) {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    } else {
+        glDisable(GL_BLEND);
+    }
+}
+
 }

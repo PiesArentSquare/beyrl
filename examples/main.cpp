@@ -12,12 +12,11 @@ int main() {
 
     constexpr vertex v{};
     auto layout = beyrl::layout(v.position, v.uv);
-
     vertex verticies[] = {
-        {{ -0.5f, -0.5f, 0.0f}, {-1.0f, -1.0f }},
-        {{ -0.5f,  0.5f, 0.0f}, {-1.0f,  1.0f }},
-        {{  0.5f,  0.5f, 0.0f}, { 1.0f,  1.0f }},
-        {{  0.5f, -0.5f, 0.0f}, { 1.0f, -1.0f }}
+        {{ -0.5f, -0.5f, 0.0f}, { 0.0f, 0.0f }},
+        {{ -0.5f,  0.5f, 0.0f}, { 0.0f, 1.0f }},
+        {{  0.5f,  0.5f, 0.0f}, { 1.0f, 1.0f }},
+        {{  0.5f, -0.5f, 0.0f}, { 1.0f, 0.0f }}
     };
     unsigned indicies[] = {
         0, 1, 2,
@@ -26,9 +25,14 @@ int main() {
 
     beyrl::Model model(verticies, sizeof(verticies), indicies, 6, layout);
     
-    beyrl::Shader shader("res/vert.glsl", "res/frag.glsl");
+    beyrl::Shader shader("res/shaders/vert.glsl", "res/shaders/frag.glsl");
+
+    beyrl::Texture texture("res/textures/thumb.png");
+    texture.setBlendMode(beyrl::Texture::BlendMode::Nearest, beyrl::Texture::BlendMode::Nearest);
+    window.enableBlending(true);
 
     window.run([&]() {
+        texture.bind();
         window.render(model, shader);
     });
 }
