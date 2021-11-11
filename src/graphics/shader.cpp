@@ -1,9 +1,10 @@
-#include <beyrl/graphics/shader.hpp>
-#include <beyrl/graphics/gl_context.hpp>
-
 #include <iostream>
 #include <sstream>
 #include <fstream>
+
+#include <beyrl/graphics/shader.hpp>
+
+#include "gl_context.hpp"
 
 namespace beyrl {
 

@@ -1,5 +1,7 @@
 #include <beyrl/graphics/model.hpp>
 
+#include "gl_context.hpp"
+
 namespace beyrl {
 
 Model::Model(void *verticies, size_t verticiesSize, unsigned indicies[], size_t indexCount, layout const &layout) : m_vao(), m_vbo(), m_ibo(), m_vertCount(indexCount) {
@@ -12,7 +14,20 @@ Model::Model(void *verticies, size_t verticiesSize, unsigned indicies[], size_t 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * sizeof(unsigned), indicies, GL_STATIC_DRAW);
 
     for (int i = 0; i < layout.elements.size(); i++) {
-        glVertexAttribPointer(i, layout.elements[i].count, layout.elements[i].type, GL_FALSE, layout.stride, (const void*)layout.elements[i].offset);
+        unsigned type;
+        switch(layout.elements[i].type) {
+            case vectype::Float:
+                type = GL_FLOAT;
+                break;
+            case vectype::Int:
+                type = GL_INT;
+                break;
+            case vectype::UInt:
+                type = GL_UNSIGNED_INT;
+                break;
+        }
+
+        glVertexAttribPointer(i, layout.elements[i].count, type, GL_FALSE, layout.stride, (const void*)layout.elements[i].offset);
         glEnableVertexAttribArray(i);
     }
 }

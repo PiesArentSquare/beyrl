@@ -1,8 +1,10 @@
+#include <stdexcept>
+#include <iostream>
+
 #include <beyrl/graphics/context.hpp>
 #include <beyrl/graphics/window.hpp>
 
-#include <stdexcept>
-#include <iostream>
+#include "gl_context.hpp"
 
 namespace beyrl {
 
@@ -19,7 +21,7 @@ RenderingContext::~RenderingContext() {
 
 Window RenderingContext::window(Window::properties props) {
     Window window(props);
-    glfwMakeContextCurrent(window.m_glwindow);
+    glfwMakeContextCurrent(static_cast<GLFWwindow *>(window.m_window));
     if (!m_init) {
         if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
             throw std::runtime_error("gl error: failed to initialize glad");

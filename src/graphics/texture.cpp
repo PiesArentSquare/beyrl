@@ -1,6 +1,7 @@
-#include "beyrl/graphics/texture.hpp"
-#include "beyrl/graphics/gl_context.hpp"
-#include "stb/stb_image.h"
+#include <beyrl/graphics/texture.hpp>
+#include <stb/stb_image.h>
+
+#include "gl_context.hpp"
 
 #include <iostream>
 

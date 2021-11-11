@@ -3,39 +3,44 @@
 #include <array>
 #include <utility>
 
-#include <beyrl/graphics/gl_context.hpp>
 #include <beyrl/math/vector.hpp>
 
 namespace beyrl {
 
+enum class vectype {
+    Float,
+    Int,
+    UInt
+};
+
 struct element {
-    unsigned type;
+    vectype type;
     unsigned count;
     size_t offset;
 
     constexpr element() = default;
-    constexpr element(unsigned t, unsigned c, size_t o) : type(t), count(c), offset(o) {}
+    constexpr element(vectype t, unsigned c, size_t o) : type(t), count(c), offset(o) {}
 };
 
 template<size_t N>
 class static_layout {
 
-    template<typename T, typename... Ts, size_t S>
-    friend consteval static_layout<S> layout(T t, Ts... ts);
+    static constexpr vectype getType(Vec2f) { return vectype::Float; }
+    static constexpr vectype getType(Vec2i) { return vectype::Int; }
+    static constexpr vectype getType(Vec2ui) { return vectype::UInt; }
 
-    static consteval unsigned getGlType(Vec2f) { return GL_FLOAT; }
-    static consteval unsigned getGlType(Vec2i) { return GL_INT; }
-    static consteval unsigned getGlType(Vec2ui) { return GL_UNSIGNED_INT; }
+    template<typename T, typename... Ts, size_t S>
+    friend constexpr static_layout<S> layout(T t, Ts... ts);
         
     template<size_t S, typename T>
-    static consteval void layout_impl(static_layout<S> &l, unsigned i, size_t offset, T t) {
-        l.elements[i] = element{getGlType(t), T::count, offset};
+    static constexpr void layout_impl(static_layout<S> &l, unsigned i, size_t offset, T t) {
+        l.elements[i] = element{getType(t), T::count, offset};
         l.stride = offset + sizeof(T);
     }
 
     template<size_t S, typename T, typename... Ts>
-    static consteval void layout_impl(static_layout<S> &l, unsigned i, size_t offset, T t, Ts... ts) {
-        l.elements[i] = element{getGlType(t), T::count, offset};
+    static constexpr void layout_impl(static_layout<S> &l, unsigned i, size_t offset, T t, Ts... ts) {
+        l.elements[i] = element{getType(t), T::count, offset};
         layout_impl(l, i + 1, l.elements[i].offset + sizeof(T), ts...);
     }
 
@@ -47,10 +52,10 @@ public:
 };
 
 template<typename T, typename... Ts, size_t S = sizeof...(Ts) + 1>
-consteval static_layout<S> layout(T t, Ts... ts) {
+constexpr static_layout<S> layout(T t, Ts... ts) {
     static_layout<S> l = {};
 
-    l.elements[0] = element(static_layout<S>::getGlType(t), T::count, 0);
+    l.elements[0] = element(static_layout<S>::getType(t), T::count, 0);
     static_layout<S>::layout_impl(l, 1, sizeof(T), ts...);
 
     return l;

@@ -1,25 +1,27 @@
 #include <beyrl/graphics/window.hpp>
 #include <beyrl/graphics/shader.hpp>
 
+#include "gl_context.hpp"
+
 #include <iostream>
 
 namespace beyrl {
 
 Window::Window(Window::properties props) {
-    m_glwindow = glfwCreateWindow(props.width, props.height, props.name.c_str(), NULL, NULL);
-    if (m_glwindow == NULL) {
+    m_window = glfwCreateWindow(props.width, props.height, props.name.c_str(), NULL, NULL);
+    if (m_window == NULL) {
         glfwTerminate();
         throw std::runtime_error("gl error: failed to create gl window");
     }
-    glfwSetWindowUserPointer(m_glwindow, this);
-    glfwSetFramebufferSizeCallback(m_glwindow, [](auto *window, int width, int height) {
+    glfwSetWindowUserPointer(static_cast<GLFWwindow *>(m_window), this);
+    glfwSetFramebufferSizeCallback(static_cast<GLFWwindow *>(m_window), [](auto *window, int width, int height) {
         Window *w = (Window *)glfwGetWindowUserPointer(window);
         w->resize(width, height);
     });
 }
 
 Window::~Window() {
-    glfwDestroyWindow(m_glwindow);
+    glfwDestroyWindow(static_cast<GLFWwindow *>(m_window));
 }
 
 void Window::setup() {
@@ -40,13 +42,13 @@ void Window::render(Model const &model, Shader const &shader) {
 }
 
 void Window::run(std::function<void()> runFunc) {
-    while(!glfwWindowShouldClose(m_glwindow)) {
+    while(!glfwWindowShouldClose(static_cast<GLFWwindow *>(m_window))) {
         glClearColor(1.0, 0.8, 0.3, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         runFunc();
         
-        glfwSwapBuffers(m_glwindow);
+        glfwSwapBuffers(static_cast<GLFWwindow *>(m_window));
         glfwPollEvents();
     }
 }

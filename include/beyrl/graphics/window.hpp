@@ -3,14 +3,13 @@
 #include <functional>
 #include <string>
 
-#include "gl_context.hpp"
 #include "model.hpp"
 #include "shader.hpp"
 
 namespace beyrl {
 
 class Window {
-    GLFWwindow *m_glwindow;
+    void *m_window;
 
     struct properties {
         unsigned width, height;

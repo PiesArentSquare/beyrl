@@ -17,8 +17,13 @@ add_library(beyrl STATIC
     "src/graphics/model.cpp"
     "src/graphics/texture.cpp"
 )
-target_include_directories(beyrl PUBLIC "include/" PRIVATE "src")
-target_link_libraries(beyrl PUBLIC glfwInterface glad stb_image)
+target_include_directories(beyrl
+PUBLIC
+    "include/"
+PRIVATE
+    "src"
+)
+target_link_libraries(beyrl PRIVATE glfwInterface glad stb_image)
 target_compile_features(beyrl PUBLIC cxx_std_20)
 
 add_subdirectory("examples")
