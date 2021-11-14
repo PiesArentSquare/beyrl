@@ -36,7 +36,7 @@ template<typename T> struct Matrix4 {
 
     inline const T &operator [] (int index) const { return elements.at(index); }
 
-    inline static Matrix4<T> identity() {
+    inline constexpr static Matrix4<T> identity() {
         return { 1, 0, 0, 0,
                  0, 1, 0, 0,
                  0, 0, 1, 0,
@@ -44,14 +44,14 @@ template<typename T> struct Matrix4 {
     }
 
 
-    inline static Matrix4<T> orthographic(T const l, T const r, T const t, T const b, T const n = -1, T const f = 1) {
+    inline constexpr static Matrix4<T> orthographic(T const l, T const r, T const t, T const b, T const n = -1, T const f = 1) {
         return { 2/(r-l),      0,           0,           0,
                  0,            2/(t-b),     0,           0,
                  0,            0,          -2/(f-n),     0,
                  -(r+l)/(r-l),-(t+b)/(t-b),-(f+n)/(f-n), 1 };
     }
 
-    inline static Matrix4<T> perspective(T const aspect, T const fov, T const near, T const far) {
+    inline constexpr static Matrix4<T> perspective(T const aspect, T const fov, T const near, T const far) {
         return { 1/(aspect * tan(fov/2)), 0,              0,                        0,
                  0,                       1/(tan(fov/2)), 0,                        0,
                  0,                       0,              (-far-near)/(far-near),  -1,
@@ -59,46 +59,57 @@ template<typename T> struct Matrix4 {
     }
 
 
-    inline static Matrix4<T> translate(T const x, T const y, T const z) {
+    inline constexpr static Matrix4<T> translate(T const x, T const y, T const z) {
         return { 1, 0, 0, 0,
                  0, 1, 0, 0,
                  0, 0, 1, 0,
                  x, y, z, 1 };
     }
 
-    inline static Matrix4<T> translate(Vector3<T> const &position) {
+    inline constexpr static Matrix4<T> translate(Vector3<T> const &position) {
         return translate(position.x, position.y, position.z);
     }
 
-    inline static Matrix4<T> rotateX(T const a) {
+    inline constexpr static Matrix4<T> rotateX(T const a) {
         return { 1, 0,      0,      0,
                  0, cos(a),-sin(a), 0,
                  0, sin(a), cos(a), 0,
                  0, 0,      0,      1 };
     }
 
-    inline static Matrix4<T> rotateY(T const a) {
+    inline constexpr static Matrix4<T> rotateY(T const a) {
         return { cos(a), 0,-sin(a), 0,
                  0,      1, 0,      0,
                  sin(a), 0, cos(a), 0,
                  0,      0, 0,      1 };
     }
 
-    inline static Matrix4<T> rotateZ(T const a) {
+    inline constexpr static Matrix4<T> rotateZ(T const a) {
         return { cos(a), sin(a), 0, 0,
                 -sin(a), cos(a), 0, 0,
                  0,      0,      1, 0,
                  0,      0,      0, 1 };
     }
 
-    inline static Matrix4<T> scale(T const x, T const y, T const z) {
+    inline constexpr static Matrix4<T> rotate(T const a, Vector3<T> const r) {
+        auto cosa = cos(a);
+        auto sina = sin(a);
+        auto omcosa = 1 - cosa;
+
+        return { cosa + (r.x * r.x) * omcosa,     r.y * r.x * omcosa + r.z * sina, r.z * r.x * omcosa - r.y * sina, 0,
+                 r.x * r.y * omcosa - r.z * sina, cosa + (r.y * r.y) * omcosa,     r.z * r.y * omcosa + r.x * sina, 0,
+                 r.x * r.z * omcosa + r.y * sina, r.y * r.z * omcosa - r.x * sina, cosa + (r.z * r.z) * omcosa,     0,
+                 0,                               0,                               0,                               1 };
+    }
+
+    inline constexpr static Matrix4<T> scale(T const x, T const y, T const z) {
         return { x, 0, 0, 0,
                  0, y, 0, 0,
                  0, 0, z, 0,
                  0, 0, 0, 1 };
     }
 
-    inline static Matrix4<T> scale(T const s) {
+    inline constexpr static Matrix4<T> scale(T const s) {
         return { s, 0, 0, 0,
                  0, s, 0, 0,
                  0, 0, s, 0,

@@ -77,44 +77,53 @@ int Shader::getUniformLocation(std::string const &name) const {
     else {
         int location = glGetUniformLocation(m_id, name.c_str());
         if (location == -1) std::cout << "gl error: could not find uniform '" << name << "'\n";
-        m_uniformLocations.insert({name, location});
+        m_uniformLocations[name] = location;
         return location;
     }
 }
 
 void Shader::setUniform(std::string const &name, bool value) const {
+    bind();
     glUniform1i(getUniformLocation(name), static_cast<int>(value));
 }
 
 void Shader::setUniform(std::string const &name, int value) const {
+    bind();
     glUniform1i(getUniformLocation(name), value);
 }
 
 void Shader::setUniform(std::string const &name, float value) const {
+    bind();
     glUniform1i(getUniformLocation(name), value);
 }
 
-void Shader::setUniform(std::string const &name, Vec2f value) const {
+void Shader::setUniform(std::string const &name, Vec2f const &value) const {
+    bind();
     glUniform2f(getUniformLocation(name), value.x, value.y);
 }
 
-void Shader::setUniform(std::string const &name, Vec3f value) const {
+void Shader::setUniform(std::string const &name, Vec3f const &value) const {
+    bind();
     glUniform3f(getUniformLocation(name), value.x, value.y, value.z);
 }
 
-void Shader::setUniform(std::string const &name, Vec4f value) const {
+void Shader::setUniform(std::string const &name, Vec4f const &value) const {
+    bind();
     glUniform4f(getUniformLocation(name), value.x, value.y, value.z, value.w);
 }
 
-void Shader::setUniform(std::string const &name, Vec2i value) const {
+void Shader::setUniform(std::string const &name, Vec2i const &value) const {
+    bind();
     glUniform2i(getUniformLocation(name), value.x, value.y);
 }
 
-void Shader::setUniform(std::string const &name, Vec2ui value) const {
+void Shader::setUniform(std::string const &name, Vec2ui const &value) const {
+    bind();
     glUniform2ui(getUniformLocation(name), value.x, value.y);
 }
 
-void Shader::setUniform(std::string const &name, Mat4f value) const {
+void Shader::setUniform(std::string const &name, Mat4f const &value) const {
+    bind();
     glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &value.elements[0]);
 }
 

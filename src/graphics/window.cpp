@@ -32,6 +32,8 @@ void Window::resize(unsigned width, unsigned height) {
     glViewport(0, 0, width, height);
     props.width = width;
     props.height = height;
+    if (resize_callback)
+        resize_callback(width, height);
 }
 
 void Window::render(Model const &model, Shader const &shader) {
@@ -42,6 +44,7 @@ void Window::render(Model const &model, Shader const &shader) {
 }
 
 void Window::run(std::function<void()> runFunc) {
+    resize(props.width, props.height);
     while(!glfwWindowShouldClose(static_cast<GLFWwindow *>(m_window))) {
         glClearColor(1.0, 0.8, 0.3, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -51,6 +54,10 @@ void Window::run(std::function<void()> runFunc) {
         glfwSwapBuffers(static_cast<GLFWwindow *>(m_window));
         glfwPollEvents();
     }
+}
+
+float Window::getTime() const {
+    return glfwGetTime();
 }
 
 void Window::enableBlending(bool enable) {

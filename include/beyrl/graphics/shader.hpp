@@ -23,12 +23,12 @@ public:
     void setUniform(std::string const &name, bool value) const;
     void setUniform(std::string const &name, int value) const;
     void setUniform(std::string const &name, float value) const;
-    void setUniform(std::string const &name, Vec2f value) const;
-    void setUniform(std::string const &name, Vec3f value) const;
-    void setUniform(std::string const &name, Vec4f value) const;
-    void setUniform(std::string const &name, Vec2i value) const;
-    void setUniform(std::string const &name, Vec2ui value) const;
-    void setUniform(std::string const &name, Mat4f value) const;
+    void setUniform(std::string const &name, Vec2f const &value) const;
+    void setUniform(std::string const &name, Vec3f const &value) const;
+    void setUniform(std::string const &name, Vec4f const &value) const;
+    void setUniform(std::string const &name, Vec2i const &value) const;
+    void setUniform(std::string const &name, Vec2ui const &value) const;
+    void setUniform(std::string const &name, Mat4f const &value) const;
 
 };
 

@@ -11,6 +11,8 @@ namespace beyrl {
 class Window {
     void *m_window;
 
+    std::function<void(unsigned, unsigned)> resize_callback;
+
     struct properties {
         unsigned width, height;
         std::string name;
@@ -26,6 +28,12 @@ public:
     ~Window();
     void run(std::function<void()>);
     void render(Model const &model, Shader const &shader);
+    inline void setResizeCallback(std::function<void(unsigned width, unsigned height)> callback) { resize_callback = callback; }
+
+    float getTime() const;
+
+    inline unsigned getWidth() const { return props.width; }
+    inline unsigned getHeight() const { return props.height; }
 
     void enableBlending(bool enable);
 };
