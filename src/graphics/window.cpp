@@ -44,10 +44,11 @@ void Window::render(Model const &model, Shader const &shader) {
 }
 
 void Window::run(std::function<void()> runFunc) {
+    glEnable(GL_DEPTH_TEST);
     resize(props.width, props.height);
     while(!glfwWindowShouldClose(static_cast<GLFWwindow *>(m_window))) {
         glClearColor(1.0, 0.8, 0.3, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         runFunc();
         

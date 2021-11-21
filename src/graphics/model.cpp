@@ -2,9 +2,11 @@
 
 #include "gl_context.hpp"
 
+#include "objparser.hpp"
+
 namespace beyrl {
 
-Model::Model(void *verticies, size_t verticiesSize, unsigned indicies[], size_t indexCount, layout const &layout) : m_vao(), m_vbo(), m_ibo(), m_vertCount(indexCount) {
+void Model::init(void *verticies, size_t verticiesSize, unsigned indicies[], size_t indexCount, layout const &layout) {
     glGenVertexArrays(1, &m_vao);
     glGenBuffers(1, &m_vbo);
     glGenBuffers(1, &m_ibo);
@@ -30,6 +32,16 @@ Model::Model(void *verticies, size_t verticiesSize, unsigned indicies[], size_t 
         glVertexAttribPointer(i, layout.elements[i].count, type, GL_FALSE, layout.stride, (const void*)layout.elements[i].offset);
         glEnableVertexAttribArray(i);
     }
+}
+
+Model::Model(void *verticies, size_t verticiesSize, unsigned indicies[], size_t indexCount, layout const &layout) : m_vao(), m_vbo(), m_ibo(), m_vertCount(indexCount) {
+    init(verticies, verticiesSize, indicies, indexCount, layout);
+}
+
+Model::Model(std::string const &objPath) : m_vao(), m_vbo(), m_ibo() {
+    auto [vertices, indicies] = obj_parser().parse(objPath);
+    m_vertCount = indicies.size();
+    init(vertices.data(), sizeof(vertices[0]) * vertices.size(), indicies.data(), indicies.size(), obj_layout);
 }
 
 Model::~Model() {

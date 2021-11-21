@@ -116,6 +116,17 @@ template<typename T> struct Matrix4 {
                  0, 0, 0, 1 };
     }
 
+    inline constexpr static Matrix4<T> lookAt(Vector3<T> const &pos, Vector3<T> const &target, Vector3<T> const &up = Vector3<T>::up()) {
+        auto cD = beyrl::Vec3f(pos - target).normalize();
+        auto cR = up.cross(cD).normalize();
+        auto cU = cD.cross(cR).normalize();
+        return Matrix4<T>{ cR.x, cU.x, cD.x, 0,
+            cR.y, cU.y, cD.y, 0,
+            cR.z, cU.z, cD.z, 0,
+            0,    0,    0,    1 }
+            * translate(-pos);
+    }
+
 };
 typedef Matrix4<float> Mat4f;
 

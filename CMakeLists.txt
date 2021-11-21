@@ -16,6 +16,7 @@ add_library(beyrl STATIC
     "src/graphics/shader.cpp"
     "src/graphics/model.cpp"
     "src/graphics/texture.cpp"
+    "src/graphics/objparser.cpp"
 )
 target_include_directories(beyrl
 PUBLIC

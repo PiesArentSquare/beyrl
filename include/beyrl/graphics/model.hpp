@@ -23,9 +23,14 @@ class Model {
     void bindVBO() const;
     void bindIBO() const;
 
+    void init(void *verticies, size_t verticiesSize, unsigned indicies[], size_t indexCount, layout const &layout);
+
 public:
     
     Model(void *verticies, size_t verticiesSize, unsigned indicies[], size_t indexCount, layout const &layout);
+
+    Model(std::string const &objPath);
+
     Model(Model &&) = default;
     ~Model();
 
