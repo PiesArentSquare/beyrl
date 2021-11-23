@@ -26,5 +26,3 @@ PRIVATE
 )
 target_link_libraries(beyrl PRIVATE glfwInterface glad stb_image)
 target_compile_features(beyrl PUBLIC cxx_std_20)
-
-add_subdirectory("examples")
