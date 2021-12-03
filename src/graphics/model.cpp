@@ -44,11 +44,7 @@ Model::Model(std::string const &objPath) : m_vao(), m_vbo(), m_ibo() {
     init(vertices.data(), sizeof(vertices[0]) * vertices.size(), indicies.data(), indicies.size(), obj_layout);
 }
 
-Model::~Model() {
-    glDeleteVertexArrays(1, &m_vao);
-    glDeleteBuffers(1, &m_vbo);
-    glDeleteBuffers(1, &m_ibo);
-}
+Model::~Model() {}
 
 void Model::bindVAO() const { glBindVertexArray(m_vao); }
 void Model::bindVBO() const { glBindBuffer(GL_ARRAY_BUFFER, m_vbo); }

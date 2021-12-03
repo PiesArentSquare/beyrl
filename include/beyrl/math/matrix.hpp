@@ -34,7 +34,8 @@ template<typename T> struct Matrix4 {
     inline Vector4<T> operator * (Vector4<T> const &other) const { return this->mul(other); }
     friend Vector4<T> operator *= (Vector4<T> &vec, const Matrix4<T> &mat) { return vec = vec * mat; }
 
-    inline const T &operator [] (int index) const { return elements.at(index); }
+    inline T const &operator [] (int index) const { return elements[index]; }
+    inline T &operator [] (int index) { return elements[index]; }
 
     inline constexpr static Matrix4<T> identity() {
         return { 1, 0, 0, 0,
@@ -102,11 +103,11 @@ template<typename T> struct Matrix4 {
                  0,                               0,                               0,                               1 };
     }
 
-    inline constexpr static Matrix4<T> scale(T const x, T const y, T const z) {
-        return { x, 0, 0, 0,
-                 0, y, 0, 0,
-                 0, 0, z, 0,
-                 0, 0, 0, 1 };
+    inline constexpr static Matrix4<T> scale(Vector3<T> const &scale) {
+        return { scale.x, 0,       0,       0,
+                 0,       scale.y, 0,       0,
+                 0,       0,       scale.z, 0,
+                 0,       0,       0,       1 };
     }
 
     inline constexpr static Matrix4<T> scale(T const s) {
@@ -127,15 +128,144 @@ template<typename T> struct Matrix4 {
             * translate(-pos);
     }
 
+    inline constexpr static Matrix4<T> transpose(Matrix4<T> const &mat) {
+        return { mat[0], mat[4], mat[8],  mat[12],
+                 mat[1], mat[5], mat[9],  mat[13],
+                 mat[2], mat[6], mat[10], mat[14],
+                 mat[3], mat[7], mat[11], mat[15] };
+    }
+
+    inline constexpr static Matrix4<T> inverse(Matrix4<T> const &mat) {
+        Matrix4<T> temp;
+
+		temp[0] = mat[5] * mat[10] * mat[15] -
+			mat[5] * mat[11] * mat[14] -
+			mat[9] * mat[6] * mat[15] +
+			mat[9] * mat[7] * mat[14] +
+			mat[13] * mat[6] * mat[11] -
+			mat[13] * mat[7] * mat[10];
+
+		temp[4] = -mat[4] * mat[10] * mat[15] +
+			mat[4] * mat[11] * mat[14] +
+			mat[8] * mat[6] * mat[15] -
+			mat[8] * mat[7] * mat[14] -
+			mat[12] * mat[6] * mat[11] +
+			mat[12] * mat[7] * mat[10];
+
+		temp[8] = mat[4] * mat[9] * mat[15] -
+			mat[4] * mat[11] * mat[13] -
+			mat[8] * mat[5] * mat[15] +
+			mat[8] * mat[7] * mat[13] +
+			mat[12] * mat[5] * mat[11] -
+			mat[12] * mat[7] * mat[9];
+
+		temp[12] = -mat[4] * mat[9] * mat[14] +
+			mat[4] * mat[10] * mat[13] +
+			mat[8] * mat[5] * mat[14] -
+			mat[8] * mat[6] * mat[13] -
+			mat[12] * mat[5] * mat[10] +
+			mat[12] * mat[6] * mat[9];
+
+		temp[1] = -mat[1] * mat[10] * mat[15] +
+			mat[1] * mat[11] * mat[14] +
+			mat[9] * mat[2] * mat[15] -
+			mat[9] * mat[3] * mat[14] -
+			mat[13] * mat[2] * mat[11] +
+			mat[13] * mat[3] * mat[10];
+
+		temp[5] = mat[0] * mat[10] * mat[15] -
+			mat[0] * mat[11] * mat[14] -
+			mat[8] * mat[2] * mat[15] +
+			mat[8] * mat[3] * mat[14] +
+			mat[12] * mat[2] * mat[11] -
+			mat[12] * mat[3] * mat[10];
+
+		temp[9] = -mat[0] * mat[9] * mat[15] +
+			mat[0] * mat[11] * mat[13] +
+			mat[8] * mat[1] * mat[15] -
+			mat[8] * mat[3] * mat[13] -
+			mat[12] * mat[1] * mat[11] +
+			mat[12] * mat[3] * mat[9];
+
+		temp[13] = mat[0] * mat[9] * mat[14] -
+			mat[0] * mat[10] * mat[13] -
+			mat[8] * mat[1] * mat[14] +
+			mat[8] * mat[2] * mat[13] +
+			mat[12] * mat[1] * mat[10] -
+			mat[12] * mat[2] * mat[9];
+
+		temp[2] = mat[1] * mat[6] * mat[15] -
+			mat[1] * mat[7] * mat[14] -
+			mat[5] * mat[2] * mat[15] +
+			mat[5] * mat[3] * mat[14] +
+			mat[13] * mat[2] * mat[7] -
+			mat[13] * mat[3] * mat[6];
+
+		temp[6] = -mat[0] * mat[6] * mat[15] +
+			mat[0] * mat[7] * mat[14] +
+			mat[4] * mat[2] * mat[15] -
+			mat[4] * mat[3] * mat[14] -
+			mat[12] * mat[2] * mat[7] +
+			mat[12] * mat[3] * mat[6];
+
+		temp[10] = mat[0] * mat[5] * mat[15] -
+			mat[0] * mat[7] * mat[13] -
+			mat[4] * mat[1] * mat[15] +
+			mat[4] * mat[3] * mat[13] +
+			mat[12] * mat[1] * mat[7] -
+			mat[12] * mat[3] * mat[5];
+
+		temp[14] = -mat[0] * mat[5] * mat[14] +
+			mat[0] * mat[6] * mat[13] +
+			mat[4] * mat[1] * mat[14] -
+			mat[4] * mat[2] * mat[13] -
+			mat[12] * mat[1] * mat[6] +
+			mat[12] * mat[2] * mat[5];
+
+		temp[3] = -mat[1] * mat[6] * mat[11] +
+			mat[1] * mat[7] * mat[10] +
+			mat[5] * mat[2] * mat[11] -
+			mat[5] * mat[3] * mat[10] -
+			mat[9] * mat[2] * mat[7] +
+			mat[9] * mat[3] * mat[6];
+
+		temp[7] = mat[0] * mat[6] * mat[11] -
+			mat[0] * mat[7] * mat[10] -
+			mat[4] * mat[2] * mat[11] +
+			mat[4] * mat[3] * mat[10] +
+			mat[8] * mat[2] * mat[7] -
+			mat[8] * mat[3] * mat[6];
+
+		temp[11] = -mat[0] * mat[5] * mat[11] +
+			mat[0] * mat[7] * mat[9] +
+			mat[4] * mat[1] * mat[11] -
+			mat[4] * mat[3] * mat[9] -
+			mat[8] * mat[1] * mat[7] +
+			mat[8] * mat[3] * mat[5];
+
+		temp[15] = mat[0] * mat[5] * mat[10] -
+			mat[0] * mat[6] * mat[9] -
+			mat[4] * mat[1] * mat[10] +
+			mat[4] * mat[2] * mat[9] +
+			mat[8] * mat[1] * mat[6] -
+			mat[8] * mat[2] * mat[5];
+
+		T determinant = mat[0] * temp[0] + mat[1] * temp[4] + mat[2] * temp[8] + mat[3] * temp[12];
+		determinant = 1 / determinant;
+
+		for (T &e : temp.elements) e *= determinant;
+
+		return std::move(temp);
+    }
 };
 typedef Matrix4<float> Mat4f;
 
 }
 
 template<typename T> std::ostream &operator<<(std::ostream &os, beyrl::Matrix4<T> const &mat) {
-    os << "\u2308 " << mat[0]  << ", " << mat[1]  << ", " << mat[2]  << ", " << mat[3]  << " \u2309\n";
-    os << "| "      << mat[4]  << ", " << mat[5]  << ", " << mat[6]  << ", " << mat[7]  << " |\n";
-    os << "| "      << mat[8]  << ", " << mat[9]  << ", " << mat[10] << ", " << mat[11] << " |\n";
-    os << "\u230a " << mat[12] << ", " << mat[13] << ", " << mat[14] << ", " << mat[15] << " \u230b";
+    os << "/ "  << mat[0]  << ", " << mat[1]  << ", " << mat[2]  << ", " << mat[3]  << " \\\n";
+    os << "| "  << mat[4]  << ", " << mat[5]  << ", " << mat[6]  << ", " << mat[7]  << " |\n";
+    os << "| "  << mat[8]  << ", " << mat[9]  << ", " << mat[10] << ", " << mat[11] << " |\n";
+    os << "\\ " << mat[12] << ", " << mat[13] << ", " << mat[14] << ", " << mat[15] << " /";
     return os;
 }

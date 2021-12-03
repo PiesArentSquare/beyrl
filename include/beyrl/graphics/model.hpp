@@ -1,7 +1,6 @@
 #pragma once
 
 #include "vertex_layout.hpp"
-#include "transform.hpp"
 
 #include <vector>
 
@@ -22,6 +21,8 @@ class Model {
     void bindVAO() const;
     void bindVBO() const;
     void bindIBO() const;
+    
+    friend class RenderingContext;
 
     void init(void *verticies, size_t verticiesSize, unsigned indicies[], size_t indexCount, layout const &layout);
 
@@ -30,8 +31,6 @@ public:
     Model(void *verticies, size_t verticiesSize, unsigned indicies[], size_t indexCount, layout const &layout);
 
     Model(std::string const &objPath);
-
-    Model(Model &&) = default;
     ~Model();
 
     void bind() const;

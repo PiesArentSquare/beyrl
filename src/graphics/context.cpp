@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <iostream>
+#include <unordered_map>
 
 #include <beyrl/graphics/context.hpp>
 #include <beyrl/graphics/window.hpp>
@@ -16,6 +17,11 @@ RenderingContext::RenderingContext() {
 }
 
 RenderingContext::~RenderingContext() {
+    for (auto vao : m_vaos)
+        glDeleteVertexArrays(1, &vao);
+    for (auto buffer : m_buffers)
+        glDeleteBuffers(1, &buffer);
+
     glfwTerminate();
 }
 
@@ -28,6 +34,14 @@ Window RenderingContext::window(Window::properties props) {
     }
     window.setup();
     return window;
+}
+
+Model RenderingContext::model(std::string const &objPath) {
+    Model model(objPath);
+    m_vaos.push_back(model.m_vao);
+    m_buffers.push_back(model.m_vbo);
+    m_buffers.push_back(model.m_ibo);
+    return model;
 }
 
 }

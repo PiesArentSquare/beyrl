@@ -3,7 +3,7 @@
 #include <functional>
 #include <string>
 
-#include "model.hpp"
+#include "object.hpp"
 #include "shader.hpp"
 
 namespace beyrl {
@@ -27,7 +27,8 @@ class Window {
 public:
     ~Window();
     void run(std::function<void()>);
-    void render(Model const &model, Shader const &shader);
+    void render(Object const &model, Shader const &shader);
+    void setClear(Vec3f const &color);
     inline void setResizeCallback(std::function<void(unsigned width, unsigned height)> callback) { resize_callback = callback; }
 
     float getTime() const;

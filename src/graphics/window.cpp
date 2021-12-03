@@ -36,18 +36,22 @@ void Window::resize(unsigned width, unsigned height) {
         resize_callback(width, height);
 }
 
-void Window::render(Model const &model, Shader const &shader) {
+void Window::render(Object const &object, Shader const &shader) {
     shader.bind();
-    model.bind();
-    glDrawElements(GL_TRIANGLES, model.getVertCount(), GL_UNSIGNED_INT, 0);
+    shader.setUniform("u_model", object.getMatrix());
+    shader.setUniform("u_normalMatrix", object.getNormalMatrix());
+    object.m_model.bind();
+    glDrawElements(GL_TRIANGLES, object.m_model.getVertCount(), GL_UNSIGNED_INT, 0);
+}
 
+void Window::setClear(Vec3f const &color) {
+    glClearColor(color.x, color.y, color.z, 1.0f);
 }
 
 void Window::run(std::function<void()> runFunc) {
     glEnable(GL_DEPTH_TEST);
     resize(props.width, props.height);
     while(!glfwWindowShouldClose(static_cast<GLFWwindow *>(m_window))) {
-        glClearColor(1.0, 0.8, 0.3, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         runFunc();

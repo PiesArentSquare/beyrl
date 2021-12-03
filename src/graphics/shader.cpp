@@ -25,7 +25,7 @@ std::string readFile(std::string const &path) {
     return std::move(result);
 }
 
-unsigned compileShader(char const *source, GLenum type) {
+unsigned compileShader(char const *source, GLenum type, std::string const &name) {
     unsigned shader = glCreateShader(type);
     glShaderSource(shader, 1, &source, NULL);
     glCompileShader(shader);
@@ -37,7 +37,7 @@ unsigned compileShader(char const *source, GLenum type) {
         char *log = (char*) alloca(length * sizeof(char));
         glGetShaderInfoLog(shader, length, &length, log);
 
-        std::cerr << "gl error: shader compilation failed\n" << log << '\n';
+        std::cerr << "gl error: shader '" << name << "' compilation failed\n" << log << '\n';
         glDeleteShader(shader);
         return 0;
     }
@@ -51,8 +51,8 @@ Shader::Shader(std::string const &vertPath, std::string const &fragPath) {
 
     m_id = glCreateProgram();
 
-    auto vertShader = compileShader(vertSource.c_str(), GL_VERTEX_SHADER);
-    auto fragShader = compileShader(fragSource.c_str(), GL_FRAGMENT_SHADER);
+    auto vertShader = compileShader(vertSource.c_str(), GL_VERTEX_SHADER, vertPath);
+    auto fragShader = compileShader(fragSource.c_str(), GL_FRAGMENT_SHADER, fragPath);
 
     glAttachShader(m_id, vertShader);
     glAttachShader(m_id, fragShader);

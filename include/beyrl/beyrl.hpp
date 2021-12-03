@@ -5,3 +5,4 @@
 #include "graphics/model.hpp"
 #include "graphics/texture.hpp"
 #include "graphics/transform.hpp"
+#include "graphics/object.hpp"
