@@ -20,7 +20,11 @@ class Transform {
     }
 public:
 
-    Transform(Vec3f position = {}, Vec3f rotation = {}, float scale = 1) : m_position(position), m_rotation(rotation), m_scale({scale, scale, scale}) {
+    Transform() : m_position(), m_rotation(), m_scale({1,1,1}) {
+        generateMatrix();
+    }
+
+    Transform(Vec3f position, Vec3f rotation, float scale = 1) : m_position(position), m_rotation(rotation), m_scale({scale, scale, scale}) {
         generateMatrix();
     }
 

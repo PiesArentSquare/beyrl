@@ -12,8 +12,6 @@ class Object : public Transform {
 
 public:
     Object(Model model, Transform transform = {}) : Transform(transform), m_model(model) {}
-
-
 };
 
 }

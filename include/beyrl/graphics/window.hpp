@@ -5,6 +5,7 @@
 
 #include "object.hpp"
 #include "shader.hpp"
+#include "camera.hpp"
 
 namespace beyrl {
 
@@ -27,7 +28,7 @@ class Window {
 public:
     ~Window();
     void run(std::function<void()>);
-    void render(Object const &model, Shader const &shader);
+    void render(Object const &model, Shader const &shader, Camera const &camera);
     void setClear(Vec3f const &color);
     inline void setResizeCallback(std::function<void(unsigned width, unsigned height)> callback) { resize_callback = callback; }
 

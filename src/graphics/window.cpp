@@ -36,10 +36,11 @@ void Window::resize(unsigned width, unsigned height) {
         resize_callback(width, height);
 }
 
-void Window::render(Object const &object, Shader const &shader) {
+void Window::render(Object const &object, Shader const &shader, Camera const &camera) {
     shader.bind();
     shader.setUniform("u_model", object.getMatrix());
     shader.setUniform("u_normalMatrix", object.getNormalMatrix());
+    shader.setUniform("u_view", camera.getMatrix());
     object.m_model.bind();
     glDrawElements(GL_TRIANGLES, object.m_model.getVertCount(), GL_UNSIGNED_INT, 0);
 }
