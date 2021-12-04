@@ -94,7 +94,7 @@ void Shader::setUniform(std::string const &name, int value) const {
 
 void Shader::setUniform(std::string const &name, float value) const {
     bind();
-    glUniform1i(getUniformLocation(name), value);
+    glUniform1f(getUniformLocation(name), value);
 }
 
 void Shader::setUniform(std::string const &name, Vec2f const &value) const {
