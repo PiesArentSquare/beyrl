@@ -21,6 +21,8 @@ RenderingContext::~RenderingContext() {
         glDeleteVertexArrays(1, &vao);
     for (auto buffer : m_buffers)
         glDeleteBuffers(1, &buffer);
+    for (auto texture : m_textures)    
+        glDeleteTextures(1, &texture);
 
     glfwTerminate();
 }

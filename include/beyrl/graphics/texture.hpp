@@ -15,7 +15,6 @@ public:
     };
 
     Texture(std::string const &path);
-    Texture(Texture &&) = default;
     ~Texture();
 
     void bind() const;
