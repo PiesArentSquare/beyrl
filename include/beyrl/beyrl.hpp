@@ -7,3 +7,4 @@
 #include "graphics/transform.hpp"
 #include "graphics/object.hpp"
 #include "graphics/camera.hpp"
+#include "graphics/material.hpp"
