@@ -34,21 +34,4 @@ public:
     }
 };
 
-class EmissionMaterial final : public Material {    
-    Vec3f m_ambient;
-    Vec3f m_diffuse;
-    Vec3f m_specular;
-
-public:
-    EmissionMaterial(Vec3f ambient, Vec3f diffuse, Vec3f specular)
-        : m_ambient(ambient), m_diffuse(diffuse), m_specular(specular) {}
-    ~EmissionMaterial() = default;
-
-    inline void apply(Shader const &shader) const override {
-        shader.setUniform("u_light.ambient", m_ambient);
-        shader.setUniform("u_light.diffuse", m_diffuse);
-        shader.setUniform("u_light.specular", m_specular);
-    }
-};
-
 }

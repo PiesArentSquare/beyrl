@@ -36,9 +36,10 @@ public:
     inline Vec3f getRotation() { return m_rotation; }
     inline Vec3f getScale() { return m_scale; }
 
-    inline void setPosition(Vec3f position) { m_position = std::move(position); generateMatrix(); }
-    inline void setRotation(Vec3f rotation) { m_rotation = std::move(rotation); generateMatrix(); }
-    inline void setScale(Vec3f scale) { m_scale = std::move(scale); generateMatrix(); }
+    inline void setPosition(Vec3f position) { m_position = position; generateMatrix(); }
+    inline void setRotation(Vec3f rotation) { m_rotation = rotation; generateMatrix(); }
+    inline void setScale(Vec3f scale) { m_scale = scale; generateMatrix(); }
+    inline void setScale(float scale) { m_scale = {scale, scale, scale}; generateMatrix(); }
 
     inline Mat4f getMatrix() const { return m_matrix; }
     inline Mat4f getNormalMatrix() const { return m_normalMatrix; }

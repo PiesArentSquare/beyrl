@@ -1,10 +1,16 @@
 #pragma once
 #include <math.h>
+#include <numbers>
 #include <array>
 
 #include "vector.hpp"
 
 namespace beyrl {
+
+template<typename T>
+constexpr T toRadians(T degrees) {
+    return degrees * (std::numbers::pi/180);
+}
 
 template<typename T> struct Matrix4 {
     std::array<T, 16> elements;
