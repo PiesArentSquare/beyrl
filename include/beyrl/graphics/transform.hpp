@@ -19,12 +19,9 @@ class Transform {
         m_normalMatrix = Mat4f::transpose(Mat4f::inverse(m_matrix));
     }
 public:
+    static constexpr Vec3f ZERO;
 
-    Transform() : m_position(), m_rotation(), m_scale({1,1,1}) {
-        generateMatrix();
-    }
-
-    Transform(Vec3f position, Vec3f rotation, float scale = 1) : m_position(position), m_rotation(rotation), m_scale({scale, scale, scale}) {
+    Transform(Vec3f position = ZERO, Vec3f rotation = ZERO, float scale = 1) : m_position(position), m_rotation(rotation), m_scale({scale, scale, scale}) {
         generateMatrix();
     }
 

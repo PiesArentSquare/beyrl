@@ -31,6 +31,9 @@ class static_layout {
 
     template<typename T, typename... Ts, size_t S>
     friend constexpr static_layout<S> layout(T t, Ts... ts);
+
+    template<typename T>
+    friend constexpr static_layout<1> layout(T t);
         
     template<size_t S, typename T>
     static constexpr void layout_impl(static_layout<S> &l, unsigned i, size_t offset, T t) {
@@ -58,6 +61,13 @@ constexpr static_layout<S> layout(T t, Ts... ts) {
     l.elements[0] = element(static_layout<S>::getType(t), T::count, 0);
     static_layout<S>::layout_impl(l, 1, sizeof(T), ts...);
 
+    return l;
+}
+
+template<typename T>
+constexpr static_layout<1> layout(T t) {
+    static_layout<1> l{};
+    l.elements[0] = element(static_layout<1>::getType(t), T::count, 0);
     return l;
 }
 

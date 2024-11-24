@@ -10,26 +10,30 @@
 namespace beyrl {
 
 class Window {
-    void *m_window;
-
-    std::function<void(unsigned, unsigned)> resize_callback;
-
-    struct properties {
+public:
+    struct Properties {
         unsigned width, height;
         std::string name;
 
-        properties(unsigned w = 1280, unsigned h = 720, std::string title = "Beyrl") : width(w), height(h), name(std::move(title)) {}
+        Properties(unsigned w = 1280, unsigned h = 720, std::string title = "Beyrl") : width(w), height(h), name(std::move(title)) {}
     } props;
+private:
+    void *m_window;
 
+    std::function<void(unsigned, unsigned)> resize_callback;
     friend class RenderingContext;
-    Window(properties p);
+    Window(Properties p);
     void setup();
     void resize(unsigned width, unsigned height);
 public:
     ~Window();
     void run(std::function<void()>);
+    void prerun();
+    void clear();
+    void pollEvents();
     void render(Object const &model, Shader const &shader, Camera const &camera);
     void setClear(Vec3f const &color);
+    bool isOpen();
     inline void setResizeCallback(std::function<void(unsigned width, unsigned height)> callback) { resize_callback = callback; }
 
     float getTime() const;

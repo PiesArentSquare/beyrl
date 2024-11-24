@@ -27,7 +27,7 @@ RenderingContext::~RenderingContext() {
     glfwTerminate();
 }
 
-Window RenderingContext::window(Window::properties props) {
+Window RenderingContext::window(Window::Properties props) {
     Window window(props);
     glfwMakeContextCurrent(static_cast<GLFWwindow *>(window.m_window));
     if (!m_init) {
@@ -40,6 +40,14 @@ Window RenderingContext::window(Window::properties props) {
 
 Model RenderingContext::model(std::string const &objPath) {
     Model model(objPath);
+    m_vaos.push_back(model.m_vao);
+    m_buffers.push_back(model.m_vbo);
+    m_buffers.push_back(model.m_ibo);
+    return model;
+}
+
+Model RenderingContext::model(void *verticies, size_t verticiesSize, unsigned indicies[], size_t indexCount, Model::layout const &layout) {
+    Model model(verticies, verticiesSize, indicies, indexCount, layout);
     m_vaos.push_back(model.m_vao);
     m_buffers.push_back(model.m_vbo);
     m_buffers.push_back(model.m_ibo);

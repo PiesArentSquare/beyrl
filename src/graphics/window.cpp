@@ -7,7 +7,7 @@
 
 namespace beyrl {
 
-Window::Window(Window::properties props) {
+Window::Window(Window::Properties props) {
     m_window = glfwCreateWindow(props.width, props.height, props.name.c_str(), NULL, NULL);
     if (m_window == NULL) {
         glfwTerminate();
@@ -40,7 +40,8 @@ void Window::render(Object const &object, Shader const &shader, Camera const &ca
     shader.bind();
     shader.setUniform("u_model", object.getMatrix());
     shader.setUniform("u_normalMatrix", object.getNormalMatrix());
-    shader.setUniform("u_view", camera.getMatrix());
+    shader.setUniform("u_view", camera.getViewMatrix());
+    shader.setUniform("u_projection", camera.getProjectionMatrix());
     object.m_model.bind();
     glDrawElements(GL_TRIANGLES, object.m_model.getVertCount(), GL_UNSIGNED_INT, 0);
 }
@@ -50,20 +51,34 @@ void Window::setClear(Vec3f const &color) {
 }
 
 void Window::run(std::function<void()> runFunc) {
-    glEnable(GL_DEPTH_TEST);
-    resize(props.width, props.height);
-    while(!glfwWindowShouldClose(static_cast<GLFWwindow *>(m_window))) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    prerun();
+    while(isOpen()) {
+        clear();
         runFunc();
-        
-        glfwSwapBuffers(static_cast<GLFWwindow *>(m_window));
-        glfwPollEvents();
+        pollEvents();
     }
 }
 
+void Window::prerun() {
+    glEnable(GL_DEPTH_TEST);
+    resize(props.width, props.height);
+}
+
+void Window::clear() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Window::pollEvents() {
+    glfwSwapBuffers(static_cast<GLFWwindow *>(m_window));
+    glfwPollEvents();
+}
+
+bool Window::isOpen() {
+    return !glfwWindowShouldClose(static_cast<GLFWwindow *>(m_window));
+}
+
 float Window::getTime() const {
-    return glfwGetTime();
+    return static_cast<float>(glfwGetTime());
 }
 
 void Window::enableBlending(bool enable) {
