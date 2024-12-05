@@ -14,8 +14,9 @@ public:
     struct Properties {
         unsigned width, height;
         std::string name;
+        bool vsync_enabled;
 
-        Properties(unsigned w = 1280, unsigned h = 720, std::string title = "Beyrl") : width(w), height(h), name(std::move(title)) {}
+        Properties(unsigned w = 1280, unsigned h = 720, std::string title = "Beyrl", bool enable_vsync = false) : width(w), height(h), name(std::move(title)), vsync_enabled(enable_vsync) {}
     } props;
 private:
     void *m_window;

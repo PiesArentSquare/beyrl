@@ -34,6 +34,8 @@ Window RenderingContext::window(Window::Properties props) {
         if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
             throw std::runtime_error("gl error: failed to initialize glad");
     }
+    if (!props.vsync_enabled)
+        glfwSwapInterval(0);
     window.setup();
     return window;
 }
